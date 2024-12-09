@@ -27,10 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
             HuangshouqimokaoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                    FirstScreen()
+                    BackgroundColorSwitcher()
                 }
             }
         }
@@ -47,13 +48,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun FirstScreen() {
+fun BackgroundColorSwitcher() {
+    // Danh sách các màu nền
+    val colors = listOf(
+        Color(0xff95fe95),
+        Color(0xfffdca0f),
+        Color(0xfffea4a4),
+        Color(0xffa5dfed))
+    var currentIndex by remember { mutableStateOf(0) }
+
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xff95fe95)),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize().background(colors[currentIndex])
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { _, dragAmount ->
+                    if (dragAmount > 0) {
+                        currentIndex = (currentIndex + 1) % colors.size
+                    } else if (dragAmount < 0) {
+                        currentIndex = (currentIndex - 1 + colors.size) % colors.size
+                    }
+                }
+            }
     ) {
+        Text(
+            text = "",
+            fontSize = 15.sp,
+            color = Color.Black,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -86,5 +108,4 @@ fun FirstScreen() {
             }
         }
     }
-}
 
