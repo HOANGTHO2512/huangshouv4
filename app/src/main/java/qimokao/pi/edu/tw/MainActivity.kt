@@ -31,6 +31,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.delay
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +55,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BackgroundColorSwitcher() {
-    // Danh sách các màu nền
+    var Maria = arrayListOf(R.drawable.maria0, R.drawable.maria1,
+        R.drawable.maria2, R.drawable.maria3)
     val colors = listOf(
         Color(0xff95fe95),
         Color(0xfffdca0f),
@@ -105,6 +113,14 @@ fun BackgroundColorSwitcher() {
             ) {
                 Text(text = "結束App")
             }
+            LazyRow {
+                items(4) { index ->
+                    Text(text = index.toString())
+                    Image (
+                        painter = painterResource(id = Maria[index % 10]),
+                        contentDescription = ("可愛動物圖片"),
+                        modifier = Modifier.fillParentMaxWidth(1.0f))
+                }
         }
     }
-
+    }
